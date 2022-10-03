@@ -9,7 +9,8 @@ import java.util.List;
 
 
 public class UserDaoJDBCImpl implements UserDao {
-    private  Connection connection = Util.getConnection();
+    private Connection connection = Util.getConnection();
+
     public UserDaoJDBCImpl() {
 
     }
@@ -20,7 +21,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 "name VARCHAR(10)," +
                 "lastName VARCHAR(10)," +
                 "age INT)";
-        try{
+        try {
             connection.prepareStatement(sql)
                     .executeUpdate();
             System.out.println("Таблица была создана!");
@@ -30,7 +31,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     //удаление таблицы, если в ней существуют записи
     public void dropUsersTable() {
-        try ( Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("DROP TABLE IF EXISTS users");
 
         } catch (SQLException e) {
@@ -48,7 +49,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 " users (name, lastName, age)" +
                 " VALUES (?, ?, ?)";
         try (
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
@@ -66,7 +67,7 @@ public class UserDaoJDBCImpl implements UserDao {
     //Удаление User из таблицы ( по id )
     public void removeUserById(long id) {
         try (
-             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM users WHERE id=?")) {
+                PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM users WHERE id=?")) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -84,7 +85,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         try (
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, name, lastName, age FROM users")) {
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, name, lastName, age FROM users")) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 User user = new User();
@@ -96,7 +97,8 @@ public class UserDaoJDBCImpl implements UserDao {
             }
         } catch (SQLException e) {
             System.out.println("Ошибка при выводе пользователей!");
-            e.printStackTrace();e.printStackTrace();
+            e.printStackTrace();
+            e.printStackTrace();
             try (Connection connection = Util.getConnection()) {
                 connection.rollback();
             } catch (SQLException a) {
@@ -107,7 +109,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void cleanUsersTable() { //Очистка содержания таблицы
         try (
-             Statement statement = connection.createStatement()) {
+                Statement statement = connection.createStatement()) {
             statement.executeUpdate("TRUNCATE TABLE users");
         } catch (SQLException e) {
             System.out.println("Ошибка при удалении данных!");
