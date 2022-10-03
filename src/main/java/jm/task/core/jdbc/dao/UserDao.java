@@ -6,7 +6,7 @@ import javax.transaction.SystemException;
 import java.util.List;
 
 public interface UserDao {
-    void createUsersTable() throws SystemException;
+    void createUsersTable()  ;
 
     void dropUsersTable();
 
