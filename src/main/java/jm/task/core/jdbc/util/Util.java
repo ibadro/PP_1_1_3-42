@@ -12,12 +12,27 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+
 public class Util {
     private final static String URL = "jdbc:mysql://localhost:3306/mydbtest";
     private final static String USERNAME = "root";
     private final static String PASSWORD = "root";
     private static Connection connection;
+    private static volatile Util instance;
 
+    private Util() {
+
+    }
+    public static Util getInstance() {
+        if (instance == null) {
+            synchronized (Util.class) {
+                if (instance == null) {
+                    instance = new Util();
+                }
+            }
+        }
+        return instance;
+    }
 
     public static Connection getConnection() {
         try {
