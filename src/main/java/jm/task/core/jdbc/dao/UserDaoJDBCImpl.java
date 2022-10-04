@@ -10,8 +10,16 @@ import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
 
-    public UserDaoJDBCImpl() {
+    private static UserDaoJDBCImpl instance;
 
+    public UserDaoJDBCImpl() {
+    }
+
+    public static UserDaoJDBCImpl getInstance() {
+        if (instance == null) {
+            instance = new UserDaoJDBCImpl();
+        }
+        return instance;
     }
 
     public void createUsersTable() { //создание таблицы
